@@ -32,4 +32,7 @@ ${THIS_DIR}/third_party_configs/tmux_config.sh
 ${THIS_DIR}/third_party_configs/oh-my-zsh.sh
 
 # clone powerlevel10k in oh-my-zsh custom directory
+# to configure after this run:
+# p10k config
+# alternatively stow p10k to apply my custom changes
 ${THIS_DIR}/third_party_configs/powerlevel10k.sh
