@@ -28,8 +28,6 @@ RUN set -x \
     && apt-get install -y libncurses-dev \
     # libncurses-dev: required for zsh
     && apt-get install -y zip \
-    # stow: dotfile manager
-    && apt-get install -y stow \
     # zsh terminal
     && apt-get install -y zsh
 

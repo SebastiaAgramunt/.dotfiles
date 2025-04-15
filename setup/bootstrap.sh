@@ -6,15 +6,15 @@ THIS_DIR=$(dirname "$(realpath "${BASH_SOURCE[0]}")")
 ROOT_DIR=$(dirname "${THIS_DIR}")
 source ${THIS_DIR}/utils.sh
 
-# install packages system-wide (if you are root)
-if [[ "${OS}" == "unknown-linux-gnu" ]]; then
-    ${THIS_DIR}/install_prerequisites/linux.sh
-fi
+# # install packages system-wide (if you are root)
+# if [[ "${OS}" == "unknown-linux-gnu" ]]; then
+#     ${THIS_DIR}/install_prerequisites/linux.sh
+# fi
 
-# for this one let's assume you are root
-if [[ "${OS}" == "apple-darwin" ]]; then
-    ${THIS_DIR}/install_prerequisites/macos.sh
-fi
+# # for this one let's assume you are root
+# if [[ "${OS}" == "apple-darwin" ]]; then
+#     ${THIS_DIR}/install_prerequisites/macos.sh
+# fi
 
 # install all the tools in build/bin
 echo $DOTFILES_CUSTOM_INSTALL_DIR
