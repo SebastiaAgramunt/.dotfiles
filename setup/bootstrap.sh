@@ -11,10 +11,10 @@ source ${THIS_DIR}/utils.sh
 #     ${THIS_DIR}/install_prerequisites/linux.sh
 # fi
 
-# # for this one let's assume you are root
-# if [[ "${OS}" == "apple-darwin" ]]; then
-#     ${THIS_DIR}/install_prerequisites/macos.sh
-# fi
+# for this one let's assume you are root
+if [[ "${OS}" == "apple-darwin" ]]; then
+    ${THIS_DIR}/install_prerequisites/macos.sh
+fi
 
 # install all the tools in build/bin
 echo $DOTFILES_CUSTOM_INSTALL_DIR

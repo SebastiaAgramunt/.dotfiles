@@ -1,35 +1,33 @@
 #!/bin/bash
 
-#!/usr/bin/env bash
 set -euo pipefail
 
 THIS_DIR=$(dirname "$(realpath "$0")")
 source $(dirname ${THIS_DIR})/utils.sh
 
+VERSION=2.4.1
 if [[ "${OS}" == "unknown-linux-gnu" ]]; then
     # make build temporary directory
-    BUILD_DIR="$(mktemp -d)"
-    echo $BUILD_DIR
-    cd "$BUILD_DIR"
+    BUILD_DIR=$INSTALL_DIR
+    mkdir -p ${BUILD_DIR}/stow
+    mkdir -p ${BUILD_DIR}/bin
+    cd "$BUILD_DIR"/stow
 
     # Download and extract Stow in temporary directory
-    curl -LO https://ftp.gnu.org/gnu/stow/stow-2.3.1.tar.gz
-    tar -xzf stow-2.3.1.tar.gz
-    cd stow-2.3.1
+    curl -LO https://ftp.gnu.org/gnu/stow/stow-${VERSION}.tar.gz
+    tar -xzf stow-${VERSION}.tar.gz
+    cd stow-${VERSION}
 
     # configure and install
-    ./configure --prefix=$BUILD_DIR
+    ./configure --prefix=$BUILD_DIR/stow
     make
     make install
 
-    # copy just the binary
-    cp $BUILD_DIR/bin/stow ${DOTFILES_CUSTOM_INSTALL_DIR}
+    rm -rf stow-${VERSION}.tar.gz
 
-    # Clean up
-    rm -rf "$BUILD_DIR"
+    ln -s ${BUILD_DIR}/stow/bin/stow ${BUILD_DIR}/bin/stow
+    ln -s ${BUILD_DIR}/stow/bin/chkstow ${BUILD_DIR}/bin/chkstow
+
 elif [[ "${OS}" == "apple-darwin" ]]; then
     brew install stow
 fi
-
-# Confirm installation
-echo "✅ Installed GNU Stow to: $DOTFILES_CUSTOM_INSTALL_DIR"
