@@ -17,7 +17,6 @@ if [[ "${OS}" == "apple-darwin" ]]; then
 fi
 
 # install all the tools in build/bin
-echo $DOTFILES_CUSTOM_INSTALL_DIR
 for script in ${THIS_DIR}/install_scripts/*.sh; do
   if [ -x "$script" ]; then
     echo "Running $script ..."
