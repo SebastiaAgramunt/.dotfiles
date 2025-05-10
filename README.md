@@ -1,7 +1,7 @@
 # Macos
 
 ```bash
-git clone https://github.com/SebastiaAgramunt/.dotfiles.git ${HOME}/.dotfiles
+git clone git@github.com:SebastiaAgramunt/.dotfiles.git
 rm -rf ${HOME}/.dotfiles/build
 ~/.dotfiles/setup/bootstrap.sh
 ```
