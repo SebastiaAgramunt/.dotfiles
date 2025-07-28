@@ -3,3 +3,5 @@ source "$HOME/.dotfiles/zsh/sources/exports.sh"
 source "$HOME/.dotfiles/zsh/sources/functions.sh"
 source "$HOME/.dotfiles/zsh/sources/pyenv_conf.sh"
 source "$HOME/.dotfiles/zsh/sources/ohmyzsh.sh"
+
+alias backup="$HOME/.dotfiles/zsh/scripts/backup.sh"
