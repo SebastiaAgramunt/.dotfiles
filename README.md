@@ -15,3 +15,9 @@ Then stow the config files you need, e.g. for zsh:
  # Macos
  cd ~/.dotfiles && stow --adopt zsh
 ```
+
+Finally source `~/.zshrc`
+
+```bash
+cd $HOME && source ~/.zshrc
+```
