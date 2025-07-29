@@ -6,12 +6,12 @@ rm -rf ${HOME}/.dotfiles/build
 ~/.dotfiles/setup/bootstrap.sh
 ```
 
-Then stow the config files you need, e.g. for bash:
+Then stow the config files you need, e.g. for zsh:
 
 ```bash
 # Linux
- ./build/bin/stow --adopt bash
+ cd ~/.dotfiles && ./build/bin/stow --adopt zsh
 
  # Macos
- stow --adopt bash
+ cd ~/.dotfiles && stow --adopt zsh
 ```

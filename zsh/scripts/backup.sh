@@ -19,14 +19,18 @@ PIM=120
 VOLUME_NAME=${DATE}_"backup_files"
 
 # create directory
-if [ -d "$HOME/Backups/${DATE}_backup" ]; then
-  echo "$HOME/Backups/${DATE}_backup directory exist..."
-  echo "Exiting without backing up"
-  exit 1
-fi
+check_directory(){
+    if [ -d "$HOME/Backups/${DATE}_backup" ]; then
+        echo "$HOME/Backups/${DATE}_backup directory exist..."
+        echo "Exiting without backing up"
+        exit 1
+    else
+        mkdir -p ~/Backups/${DATE}_backup
+    fi
+}
 
-rm -rf ~/Backups/${DATE}_backup
-mkdir -p ~/Backups/${DATE}_backup
+# rm -rf ~/Backups/${DATE}_backup
+
 
 check_software(){
     # Check that we have the necessary command line tools
@@ -75,38 +79,50 @@ encrypted_mount(){
         /Volumes/${VOLUME_NAME}
 
     echo ""
-    echo ""
-    echo "Place the files in the mounted encrypted directory $BACKUP_DIRECTORY"
+    echo "======================================================================================="
+    echo "📂  Place the files in the mounted encrypted directory: $BACKUP_DIRECTORY"
     echo "======================================================================================="
     echo ""
-    echo "* Obsidian notes:"
+
+    echo "📝  Obsidian Notes"
+    echo "    ----------------------------------------"
+    echo "    Copy your notes folder:"
+    echo "        cp -r ~/obsidian_notes /Volumes/${VOLUME_NAME}"
     echo ""
-    echo "      > cp -r ~/obsidian_notes /Volumes/${VOLUME_NAME}"
-    echo "" 
-    echo "* Aegis two factor authentication:"
+
+    echo "🔐  Aegis Two-Factor Authentication Backup"
+    echo "    ----------------------------------------"
+    echo "    1. Open the Aegis app on your phone"
+    echo "    2. Go to: Settings > Import & Export > Export > Aegis (.JSON)"
+    echo "    3. Make sure 'Encrypt the vault' is enabled"
+    echo "    4. Save to Google Drive, download manually to ~/Downloads"
+    echo "    5. Delete the file from Google Drive"
+    echo "    6. Move it to the encrypted volume:"
+    echo "        mv ~/Downloads/aegis-*.json /Volumes/${VOLUME_NAME}"
     echo ""
-    echo "      Go to the app in the mobile phone"
-    echo "      Settings > Import & Export > Export > Aegis (.JSON)"
-    echo "      Make sure 'Encrypt the vault' is enabled"
-    echo "      save to google drive, manually download to ~/Downloads"
-    echo "      and delete the file in the cloud (Google Drive)"
-    echo "      > mv ~/Downloads/aegis-*.json /Volumes/${VOLUME_NAME}"
+
+    echo "🌐  Firefox Bookmarks"
+    echo "    ----------------------------------------"
+    echo "    1. In Firefox: Bookmarks > Manage Bookmarks"
+    echo "    2. Click the up/down arrow > Backup (JSON)"
+    echo "    3. Download the file directly to /Volumes/${VOLUME_NAME}"
     echo ""
-    echo "* Firefox bookmarks:"
+
+    echo "📇  Phone Contacts"
+    echo "    ----------------------------------------"
+    echo "    1. Open the Contacts app on your phone"
+    echo "    2. Export to file > Device > Save to Google Drive"
+    echo "    3. Download to your computer and remove from Drive"
+    echo "    4. Move it to the encrypted volume:"
+    echo "        mv ~/Downloads/contacts.vcf /Volumes/${VOLUME_NAME}"
     echo ""
-    echo "      Bookmarks > Manage Bookmarks > Click up and down arrow"
-    echo "      > Security copy (json) > Download file to /Volumes/${VOLUME_NAME}"
+
+    echo "🔑  SSH Keys"
+    echo "    ----------------------------------------"
+    echo "    Copy your .ssh directory:"
+    echo "        cp -r ~/.ssh /Volumes/${VOLUME_NAME}/ssh"
     echo ""
-    echo "* Phone contacts:"
-    echo ""
-    echo "      Contacts App > Export to File > Device > Save to Google Drive"
-    echo "      Download to device and remove from Google Drive"
-    echo "      > mv ~/Downloads/contacts.vcf /Volumes/${VOLUME_NAME}"
-    echo ""
-    echo "* Copy what's in ~/.ssh"
-    echo ""
-    echo "      cp -r ~/.ssh /Volumes/${VOLUME_NAME}/ssh"
-    echo ""
+
 
     read -n 1 -s -r -p "Press any key to continue..."
     echo
@@ -160,35 +176,46 @@ bitwarden_backup(){
 
 print_help() {
     echo "============================================================"
-    echo "                 BackupBuddy – CLI Backup Tool              "
+    echo "🛡️   BackupBuddy – CLI Backup Tool"
     echo "============================================================"
-    echo "Author: Sebastia Agramunt Puig                              "
-    echo "                                                            "
-    echo "Creates a backup for today in:                              "
-    echo "  ${HOME}/Backups/${DATE}_backup                            "
-    echo "                                                            "
-    echo "                                                            "
-    echo "Usage:                                                      "
-    echo "  > backup --help  # displays this helper                   "
-    echo "  > backup                                                  "
+    echo "👤  Author : Sebastia Agramunt Puig"
+    echo ""
+    echo "📦  Creates a backup for today in:"
+    echo "     ${HOME}/Backups/${DATE}_backup"
+    echo ""
+    echo "📘  Usage:"
+    echo "     backup --help      # Show this help message"
+    echo "     backup             # Run the backup"
     echo "============================================================"
 }
 
 
 run_backup(){
+    # print help
+    [[ "$1" == "-h" || "$1" == "--help" ]] && { print_help; exit 0; }
+
+    echo "0) Check all required software is installed"
     check_software
+
     echo "1) Asking password to encrypt the volume using VeraCrypt..."
     ask_password
+
     echo "2) Creating volume to backup files..."
     encrypted_mount
+
     echo "5) Running bitwarden backup..."
     bitwarden_backup
-    echo "ALL BACKED UP!"
-    echo "Now copy ${BACKUP_DIRECTORY} to external drives and cloud providers for redundancy"
+
+    echo ""
+    echo "✅ Backup Complete!"
+    echo "📁 Your backup is saved in: ${BACKUP_DIRECTORY}"
+    echo ""
+    echo "🔁 For redundancy, please copy it to:"
+    echo "   • External drives"
+    echo "   • Cloud storage providers (e.g., MEGA, Dropbox, Google Drive)"
+    echo ""
+    echo "💡 Tip: Keep at least one off-site copy for disaster recovery."
 }
 
-[[ "$1" == "-h" || "$1" == "--help" ]] && {
-    print_help
-    exit 0
-}
-run_backup
+
+run_backup "$@"
