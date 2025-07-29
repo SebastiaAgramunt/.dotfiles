@@ -52,6 +52,6 @@ alias cpuinfo='lscpu'
  
 ## older system use /proc/cpuinfo ##
 ##alias cpuinfo='less /proc/cpuinfo' ##
- 
-## get GPU ram on desktop / laptop##
-alias gpumeminfo='grep -i --color memory /var/log/Xorg.0.log'
+
+## specific aliases for custom programs
+alias backup="$HOME/.dotfiles/zsh/scripts/backup.sh"
