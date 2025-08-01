@@ -80,14 +80,15 @@ encrypted_mount(){
 
     echo ""
     echo "======================================================================================="
-    echo "📂  Place the files in the mounted encrypted directory: $BACKUP_DIRECTORY"
+    echo "📂  Place the files in the mounted encrypted directory:                                "
+    echo "    ${BACKUP_DIRECTORY}                                                                "
     echo "======================================================================================="
     echo ""
 
     echo "📝  Obsidian Notes"
     echo "    ----------------------------------------"
     echo "    Copy your notes folder:"
-    echo "        cp -r ~/obsidian_notes /Volumes/${VOLUME_NAME}"
+    echo "        cp -r ~/Documents/notes /Volumes/${VOLUME_NAME}"
     echo ""
 
     echo "🔐  Aegis Two-Factor Authentication Backup"
@@ -194,8 +195,9 @@ run_backup(){
     # print help
     [[ "$1" == "-h" || "$1" == "--help" ]] && { print_help; exit 0; }
 
-    echo "0) Check all required software is installed"
+    echo "0) Check all required software is installed and created backup dir"
     check_software
+    check_directory
 
     echo "1) Asking password to encrypt the volume using VeraCrypt..."
     ask_password
