@@ -1,9 +1,9 @@
 compress() {
   if [[ "$1" == "--help" || "$1" == "-h" || $# -lt 2 ]]; then
     cat <<EOF
-Usage: compress <format> <target> [--password <password>]
+Usage: compress <format> <file_or_dir> [--password]
 
-Compress a file or directory into:
+Formats:
   zip     →  zip [-P password]
   tar.gz  →  tar czf
   tar.bz2 →  tar cjf
@@ -12,9 +12,8 @@ Compress a file or directory into:
 
 Examples:
   compress zip my_folder
-  compress zip my_folder --password mypass
-  compress tar.gz my_file.txt
-  compress 7z my_dir --password secret
+  compress zip my_folder --password      # interactive prompt
+  compress tar.gz notes.txt
 EOF
     return 0
   fi
@@ -24,89 +23,121 @@ EOF
   local target="$1"
   shift
 
-  local password=""
-  if [[ "$1" == "--password" && -n "$2" ]]; then
-    password="$2"
-    shift 2
+  if [[ ! -e "$target" ]]; then
+    echo "compress: target '$target' does not exist"
+    return 1
   fi
+
+  local password=""
+  if [[ "$1" == "--password" ]]; then
+    echo -n "Enter password: "
+    read -s password
+    echo
+    echo -n "Confirm password: "
+    read -s confirm
+    echo
+    if [[ "$password" != "$confirm" ]]; then
+      echo "Passwords do not match."
+      return 1
+    fi
+    shift
+  fi
+
+  local base_name
+  base_name=$(basename "$target")
+  local dir_name
+  dir_name=$(cd "$(dirname "$target")" && pwd)
 
   case "$format" in
     zip)
-      if [[ -n "$password" ]]; then
-        zip -r -P "$password" "$target.zip" "$target"
-      else
-        zip -r "$target.zip" "$target"
-      fi
+      (cd "$dir_name" && \
+        [[ -n "$password" ]] && zip -r -P "$password" "$base_name.zip" "$base_name" || \
+        zip -r "$base_name.zip" "$base_name")
       ;;
     tar.gz)
-      tar czf "$target.tar.gz" "$target"
+      tar czf "$dir_name/$base_name.tar.gz" -C "$dir_name" "$base_name"
       ;;
     tar.bz2)
-      tar cjf "$target.tar.bz2" "$target"
+      tar cjf "$dir_name/$base_name.tar.bz2" -C "$dir_name" "$base_name"
       ;;
     tar.xz)
-      tar cJf "$target.tar.xz" "$target"
+      tar cJf "$dir_name/$base_name.tar.xz" -C "$dir_name" "$base_name"
       ;;
     7z)
       if [[ -n "$password" ]]; then
-        7z a -p"$password" "$target.7z" "$target"
+        7z a -p"$password" "$dir_name/$base_name.7z" "$target"
       else
-        7z a "$target.7z" "$target"
+        7z a "$dir_name/$base_name.7z" "$target"
       fi
       ;;
     *)
       echo "compress: unsupported format '$format'"
-      echo "Try: compress --help"
       return 1
       ;;
   esac
 }
 
 extract() {
-  if [[ "$1" == "--help" || "$1" == "-h" ]]; then
+  if [[ "$1" == "--help" || "$1" == "-h" || $# -lt 1 ]]; then
     cat <<EOF
-Usage: extract <archive-file>
-
-Extracts supported archive formats. If password is required, you'll be prompted.
+Usage: extract <archive> [--password]
 
 Supported formats:
-  .tar        →  tar xvf
-  .tar.gz     →  tar xvzf
-  .tar.bz2    →  tar xvjf
-  .tar.xz     →  tar xvJf
-  .gz         →  gunzip
-  .bz2        →  bunzip2
-  .xz         →  unxz
-  .zip        →  unzip (prompts for password if needed)
-  .rar        →  unar (prompts for password if needed)
-  .7z         →  7z x (prompts for password if needed)
+  .zip     →  unzip [-P password]
+  .tar.gz  →  tar xzf
+  .tar.bz2 →  tar xjf
+  .tar.xz  →  tar xJf
+  .7z      →  7z x [-p password]
 
-Example:
-  extract archive.tar.gz
+Examples:
+  extract archive.zip
+  extract archive.7z --password     # prompt for password
 EOF
     return 0
   fi
 
-  if [[ ! -f "$1" ]]; then
-    echo "extract: '$1' is not a valid file"
-    echo "Try: extract --help"
+  local archive="$1"
+  shift
+
+  if [[ ! -f "$archive" ]]; then
+    echo "extract: file '$archive' not found"
     return 1
   fi
 
-  local file="$1"
-  case "$file" in
-    *.tar)       tar xvf "$file" ;;
-    *.tar.gz)    tar xvzf "$file" ;;
-    *.tar.bz2)   tar xvjf "$file" ;;
-    *.tar.xz)    tar xvJf "$file" ;;
-    *.gz)        gunzip "$file" ;;
-    *.bz2)       bunzip2 "$file" ;;
-    *.xz)        unxz "$file" ;;
-    *.zip)       unzip "$file" ;;
-    *.rar)       unar "$file" ;;
-    *.7z)        7z x "$file" ;;
+  local password=""
+  if [[ "$1" == "--password" ]]; then
+    echo -n "Enter password: "
+    read -s password
+    echo
+    shift
+  fi
+
+  case "$archive" in
+    *.zip)
+      if [[ -n "$password" ]]; then
+        unzip -P "$password" "$archive"
+      else
+        unzip "$archive"
+      fi
+      ;;
+    *.tar.gz)
+      tar xzf "$archive"
+      ;;
+    *.tar.bz2)
+      tar xjf "$archive"
+      ;;
+    *.tar.xz)
+      tar xJf "$archive"
+      ;;
+    *.7z)
+      if [[ -n "$password" ]]; then
+        7z x -p"$password" "$archive"
+      else
+        7z x "$archive"
+      fi
+      ;;
     *)
-      echo "extract: unknown format: $file"
+      echo "extract: unsupported file format '$archive'"
       return 1
       ;;
   esac
