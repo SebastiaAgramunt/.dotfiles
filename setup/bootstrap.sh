@@ -18,10 +18,10 @@ fi
 
 # install all the tools in build/bin
 for script in ${THIS_DIR}/install_scripts/*.sh; do
-  if [ -x "$script" ]; then
-    echo "Running $script ..."
-    "$script"
-  fi
+ if [ -x "$script" ]; then
+   echo "Running $script ..."
+   "$script"
+ fi
 done
 
 # clone repositories for tmux config and copy default config to tmux dir
@@ -35,3 +35,15 @@ ${THIS_DIR}/third_party_configs/oh-my-zsh.sh
 # p10k config
 # alternatively stow p10k to apply my custom changes
 ${THIS_DIR}/third_party_configs/powerlevel10k.sh
+
+# run vim configuration script to set up the .vimrc file and the vimrcs directory
+${THIS_DIR}/third_party_configs/awesome-vim.sh
+
+# create symlink for zsh sources in ~/.config/sh
+mkdir -p ~/.config/sh
+ln -sf ${ROOT_DIR}/zsh/sources/aliases.sh ~/.config/sh/aliases.sh
+ln -sf ${ROOT_DIR}/zsh/sources/exports.sh ~/.config/sh/exports.sh
+ln -sf ${ROOT_DIR}/zsh/sources/functions.sh ~/.config/sh/functions.sh
+
+# this is for private ssh aliases, not tracked in git
+touch ~/.config/sh/servers.sh 

@@ -4,6 +4,11 @@ set -euo pipefail
 THIS_DIR=$(dirname "$(realpath "$0")")
 source $(dirname ${THIS_DIR})/utils.sh
 
+if [ -f "${INSTALL_DIR}/bin/rg" ]; then
+    echo "ripgrep is already installed in ${INSTALL_DIR}/bin/rg, skipping..."
+    exit 0
+fi
+
 # Base GitHub repo URL and API
 REPO="BurntSushi/ripgrep"
 REPO_URL="https://github.com/${REPO}"

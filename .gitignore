@@ -2,3 +2,4 @@
 build
 .tmux.conf
 .tmux.conf.local
+vim/.vimrc

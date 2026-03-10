@@ -1,0 +1,53 @@
+[user]
+    name = Sebas
+    email = 12949040+SebastiaAgramunt@users.noreply.github.com
+
+[core]
+    editor = vim
+    excludesFile = ~/.gitignore
+    autocrlf = input
+    pager = delta
+
+[interactive]
+    diffFilter = delta --color-only
+
+[delta]
+    side-by-side = true
+    syntax-theme = Dracula
+    navigate = true
+    dark = true
+
+[merge]
+    conflictstyle = zdiff3
+
+[init]
+    defaultBranch = main
+
+[pull]
+    rebase = true
+
+[rebase]
+    autoStash = true
+
+[push]
+    default = simple
+    autoSetupRemote = true
+
+[fetch]
+    prune = true
+
+[diff]
+    colorMoved = default
+
+[color]
+    ui = auto
+
+[alias]
+    st = status
+    co = checkout
+    br = branch
+    ci = commit
+    lg = log --graph --decorate --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --all
+    last = log -1 HEAD
+    delta = "!git diff | delta"
+    diffmain = diff main...HEAD

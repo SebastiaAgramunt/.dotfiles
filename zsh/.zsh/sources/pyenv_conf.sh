@@ -1,5 +1,5 @@
 THIS_DIR="$(cd "$(dirname "${BASH_SOURCE[0]:-$0}")" && pwd)"
-ROOT_DIR=$(dirname $(dirname "${THIS_DIR}"))
+ROOT_DIR=$(dirname $(dirname $(dirname "${THIS_DIR}")))
 
 # Set up pyenv from dotfiles
 export PYENV_ROOT=${ROOT_DIR}/build/pyenv

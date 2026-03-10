@@ -16,6 +16,8 @@ brew install git \
              tmux \
              mosh \
              htop \
+             git-delta \
+             eza \
              stow
 
 # for python version management

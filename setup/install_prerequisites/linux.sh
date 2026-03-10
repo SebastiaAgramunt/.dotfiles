@@ -38,5 +38,8 @@ apt-get install -y zip
 # stow: dotfile manager
 apt-get install -y stow
 
+# git-delta: enhanced git diff viewer
+apt-get install -y git-delta
+
 # zsh
 apt-get install -y zsh

@@ -4,6 +4,11 @@ set -euo pipefail
 THIS_DIR=$(dirname "$(realpath "$0")")
 source $(dirname ${THIS_DIR})/utils.sh
 
+if [ -f "${INSTALL_DIR}/bin/hexyl" ]; then
+    echo "hexyl is already installed in ${INSTALL_DIR}/bin/hexyl, skipping..."
+    exit 0
+fi
+
 # Base GitHub repo URL and API
 REPO="sharkdp/hexyl"
 REPO_URL="https://github.com/${REPO}"

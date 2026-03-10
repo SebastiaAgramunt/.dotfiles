@@ -1,9 +1,14 @@
  #!/bin/bash
 # set -euo pipefail
-set -vex
+set -e
 
 THIS_DIR=$(dirname "$(realpath "$0")")
 source $(dirname ${THIS_DIR})/utils.sh
+
+if [ -f "${INSTALL_DIR}/bin/bat" ]; then
+    echo "bat is already installed in ${INSTALL_DIR}/bin/bat, skipping..."
+    exit 0
+fi
 
 # Base GitHub repo URL and API
 REPO="sharkdp/bat"
@@ -23,7 +28,6 @@ mkdir -p "${DOTFILES_CUSTOM_INSTALL_DIR}"
 cd /tmp && curl -sSLO "$URL"
 BAT_PATH=$(tar -tzf /tmp/"$FILENAME" | grep '/bat$')
 tar -xzf /tmp/"$FILENAME" -C "$DOTFILES_CUSTOM_INSTALL_DIR" --strip-components=1 "$BAT_PATH"
-
 
 rm "${FILENAME}"
 chmod +x "${DOTFILES_CUSTOM_INSTALL_DIR}/bat"

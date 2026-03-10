@@ -1,14 +1,17 @@
 #!/bin/bash
 
 # change directories
-alias ..='cd ..'
-alias .1='cd ..'
+alias ..="cd .."
+alias ...="cd ../.."
+alias ....="cd ../../.."
+alias .....="cd ../../../.."
+alias ......="cd ../../../../.."
 
-alias ...='cd ../..'
-alias .2='cd ../..'
-
-alias ....='cd ../../..'
-alias .3='cd ../../..'
+alias .1="cd .."
+alias .2="cd ../.."
+alias .3="cd ../../.."
+alias .4="cd ../../../.."
+alias .5="cd ../../../../.."
 
 
 # zsh specific
@@ -17,9 +20,6 @@ alias reload='source ~/.zshrc'
 # handy short cuts
 alias h='history'
 alias j='jobs -l'
-
-# git
-alias gs='git status'
 
 # lsd command line
 alias lt='lsd -laht'
@@ -37,7 +37,6 @@ alias poweroff='sudo /sbin/poweroff'
 alias halt='sudo /sbin/halt'
 alias shutdown='sudo /sbin/shutdown'
 
-
 ## pass options to free ##
 alias meminfo='free -m -l -t'
  
@@ -49,9 +48,9 @@ alias pscpu='ps auxf | sort -nr -k 3'
  
 ## Get server cpu info ##
 alias cpuinfo='lscpu'
- 
-## older system use /proc/cpuinfo ##
-##alias cpuinfo='less /proc/cpuinfo' ##
 
 ## specific aliases for custom programs
 alias backup="$HOME/.dotfiles/zsh/scripts/backup.sh"
+
+# command line aliases
+alias eza='eza -lhgm -s modified --icons'
