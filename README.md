@@ -6,28 +6,27 @@ rm -rf ${HOME}/.dotfiles/build
 ~/.dotfiles/setup/bootstrap.sh
 ```
 
-Then stow the config files you need, e.g. for zsh:
+Then stow the files:
 
 ```bash
-# Linux
- cd ~/.dotfiles && ./build/bin/stow --adopt zsh
-
- # Macos
- cd ~/.dotfiles
+cd ~/.dotfiles
 stow --adopt zsh
- stow --adopt vim
- stow --adopt git
+stow --adopt vim
+stow --adopt git
 ```
 
-Finally source `~/.zshrc`
+Finally source `~/.zshrc` to apply the changes
 
 ```bash
-cd $HOME && source ~/.zshrc
+source ~/.zshrc
 ```
+In current version you will be prompted by `p10k` to configure your shell UI.
 
 # Un-stow
 
 ```bash
-cd ~/.dotfiles && stow -D zsh
-cd ~/.dotfiles && stow -D vim
+cd ~/.dotfiles
+stow -D zsh
+stow -D vim
+stow -D git
 ```

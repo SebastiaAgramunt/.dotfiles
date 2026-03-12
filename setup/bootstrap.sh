@@ -39,11 +39,8 @@ ${THIS_DIR}/third_party_configs/powerlevel10k.sh
 # run vim configuration script to set up the .vimrc file and the vimrcs directory
 ${THIS_DIR}/third_party_configs/awesome-vim.sh
 
-# create symlink for zsh sources in ~/.config/sh
+# create ~/.config/sh where you should place all private stuff.
 mkdir -p ~/.config/sh
-ln -sf ${ROOT_DIR}/zsh/sources/aliases.sh ~/.config/sh/aliases.sh
-ln -sf ${ROOT_DIR}/zsh/sources/exports.sh ~/.config/sh/exports.sh
-ln -sf ${ROOT_DIR}/zsh/sources/functions.sh ~/.config/sh/functions.sh
 
-# this is for private ssh aliases, not tracked in git
-touch ~/.config/sh/servers.sh 
+# useful for private ssh aliases, not tracked in git.
+touch ~/.config/sh/servers.sh
