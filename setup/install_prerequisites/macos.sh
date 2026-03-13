@@ -18,6 +18,7 @@ brew install git \
              htop \
              git-delta \
              eza \
+             bottom \
              stow
 
 # for python version management

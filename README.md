@@ -20,6 +20,7 @@ Finally source `~/.zshrc` to apply the changes
 ```bash
 source ~/.zshrc
 ```
+
 In current version you will be prompted by `p10k` to configure your shell UI.
 
 # Un-stow
