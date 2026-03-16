@@ -1,34 +1,54 @@
-#!/bin/bash
+#!/usr/bin/env bash
 set -euo pipefail
 
-THIS_DIR=$(dirname "$(realpath "$0")")
-source $(dirname ${THIS_DIR})/utils.sh
+THIS_DIR="$(dirname "$(realpath "$0")")"
+source "$(dirname "${THIS_DIR}")/utils.sh"
 
-if [ -f "${INSTALL_DIR}/bin/rg" ]; then
-    echo "ripgrep is already installed in ${INSTALL_DIR}/bin/rg, skipping..."
+BIN_DIR="${INSTALL_DIR}/bin"
+
+if [[ -f "${BIN_DIR}/rg" ]]; then
+    echo "ripgrep is already installed in ${BIN_DIR}/rg, skipping..."
     exit 0
 fi
 
-# Base GitHub repo URL and API
 REPO="BurntSushi/ripgrep"
 REPO_URL="https://github.com/${REPO}"
 API_URL="https://api.github.com/repos/${REPO}"
 
+TAG="$(curl -fsSL "${API_URL}/releases/latest" | grep '"tag_name"' | cut -d '"' -f 4)"
 
-# there's no gnu ripgrep in github repository yet, install musl for now
-if [[ "${OS}" == "unknown-linux-gnu" ]]; then
-    OS="unknown-linux-musl"
+# Keep the detected OS by default.
+RIPGREP_OS="${OS}"
+
+# Only override when you know that exact asset exists.
+# For ripgrep 15.1.0:
+# - aarch64 uses unknown-linux-gnu
+# - x86_64 has unknown-linux-musl available
+if [[ "${ARCH}" == "x86_64" && "${OS}" == "unknown-linux-gnu" ]]; then
+    RIPGREP_OS="unknown-linux-musl"
 fi
 
-TAG=$(curl -s "${API_URL}/releases/latest" | grep '"tag_name"' | cut -d '"' -f 4)
-FILENAME="ripgrep-${TAG}-${ARCH}-${OS}.tar.gz"
+FILENAME="ripgrep-${TAG}-${ARCH}-${RIPGREP_OS}.tar.gz"
 URL="${REPO_URL}/releases/download/${TAG}/${FILENAME}"
+TMP_FILE="/tmp/${FILENAME}"
+
 echo "Downloading: ${URL}"
 
-mkdir -p ${DOTFILES_CUSTOM_INSTALL_DIR}
-cd /tmp && curl -sSLO "$URL"
-TOOL_PATH=$(tar -tzf /tmp/"$FILENAME" | grep '/rg$')
-tar -xzf /tmp/"$FILENAME" -C "$DOTFILES_CUSTOM_INSTALL_DIR" --strip-components=1 "$TOOL_PATH"
-rm ${FILENAME}
+mkdir -p "${BIN_DIR}"
+curl -fsSL -o "${TMP_FILE}" "${URL}"
 
-echo "✅ ripgrep is now available in ${DOTFILES_CUSTOM_INSTALL_DIR}"
+TOOL_PATH="$(tar -tzf "${TMP_FILE}" | grep '/rg$' | head -n 1)"
+
+if [[ -z "${TOOL_PATH}" ]]; then
+    echo "Could not find rg inside ${TMP_FILE}"
+    exit 1
+fi
+
+tar -xzf "${TMP_FILE}" \
+    -C "${BIN_DIR}" \
+    --strip-components=1 \
+    "${TOOL_PATH}"
+
+rm -f "${TMP_FILE}"
+
+echo "✅ ripgrep is now available in ${BIN_DIR}/rg"

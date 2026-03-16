@@ -1,45 +1,59 @@
 #!/usr/bin/env bash
-
 set -euo pipefail
 set -x  # Print commands as they run
 
-echo "Updating..."
+# Ensure the script is run as root
+if [[ "$EUID" -ne 0 ]]; then
+  echo "❌ Please run this script with sudo:"
+  echo "   sudo $0"
+  exit 1
+fi
+
+echo "=============================="
+echo "Updating system"
+echo "=============================="
+
 apt-get update
 apt-get upgrade -y
 
-echo "Installing Packages..."
-# wget: download files
-apt-get install -y wget
+echo "=============================="
+echo "Installing packages"
+echo "=============================="
 
-# git: version control
-apt-get install -y git
+packages=(
+    # Networking / downloads
+    wget
+    curl
 
-# curl: HTTP client
-apt-get install -y curl
+    # Version control
+    git
 
-# vim: file editing
-apt-get install -y vim
+    # Development tools
+    gcc
+    make
 
-# gcc: C compiler
-apt-get install -y gcc
+    # Editor
+    vim
 
-# make: build tool
-apt-get install -y make
+    # Compression / archives
+    xz-utils
+    zip
 
-# xz-utils: for .tar.xz extraction
-apt-get install -y xz-utils
+    # Libraries
+    libncurses-dev
 
-# libncurses-dev: required for zsh
-apt-get install -y libncurses-dev
+    # CLI tools
+    stow
+    mosh
+    git-delta
+    bottom
 
-# zip: compression tool
-apt-get install -y zip
+    # Shell
+    zsh
+)
 
-# stow: dotfile manager
-apt-get install -y stow
+apt-get install -y "${packages[@]}"
 
-# git-delta: enhanced git diff viewer
-apt-get install -y git-delta
-
-# zsh
-apt-get install -y zsh
+echo "=============================="
+echo "Installation complete"
+echo "=============================="

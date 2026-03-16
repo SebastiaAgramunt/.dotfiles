@@ -27,7 +27,4 @@ if [[ "${OS}" == "unknown-linux-gnu" ]]; then
 
     ln -s ${BUILD_DIR}/stow/bin/stow ${BUILD_DIR}/bin/stow
     ln -s ${BUILD_DIR}/stow/bin/chkstow ${BUILD_DIR}/bin/chkstow
-
-elif [[ "${OS}" == "apple-darwin" ]]; then
-    brew install stow
 fi

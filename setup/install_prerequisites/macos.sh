@@ -10,19 +10,15 @@ fi
 
 brew update && brew upgrade && brew cleanup
 
+# the very basics
 brew install git \
              zsh \
-             neovim \
              tmux \
-             mosh \
-             htop \
-             git-delta \
-             eza \
-             bottom \
-             stow
+             mosh
 
-# for python version management
-brew install openssl@3 \
-             readline \
-             xz \
-             sqlite3
+# some utils that I wish I had binaries for, need to
+# install using brew on macOS.
+brew install htop \
+             eza \
+             git-delta \
+             stow

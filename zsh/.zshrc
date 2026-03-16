@@ -13,3 +13,6 @@ fi
 for f in ~/.config/sh/*.sh; do
   [ -f "$f" ] && source "$f"
 done
+
+# set vi to use in command line
+set -o vi

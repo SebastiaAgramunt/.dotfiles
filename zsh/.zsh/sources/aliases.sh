@@ -39,18 +39,18 @@ alias shutdown='sudo /sbin/shutdown'
 
 ## pass options to free ##
 alias meminfo='free -m -l -t'
- 
+
 ## get top process eating memory
 alias psmem='ps auxf | sort -nr -k 4'
- 
+
 ## get top process eating cpu ##
 alias pscpu='ps auxf | sort -nr -k 3'
- 
+
 ## Get server cpu info ##
 alias cpuinfo='lscpu'
 
 ## specific aliases for custom programs
-alias backup="$HOME/.dotfiles/zsh/scripts/backup.sh"
+alias backup="$HOME/.dotfiles/zsh/.zsh/scripts/backup.sh"
 
 # command line aliases
 alias eza='eza -lhgm -s modified --icons'
