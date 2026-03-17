@@ -46,10 +46,13 @@ if not, ask your system administrator to install the tools listed. Stowing works
 
 ```bash
 cd ~/.dotfiles
-stow --adopt zsh
-stow --adopt vim
-stow --adopt git
-stow --adopt tmux
+STOW_EXE=~/.dotfiles/build/bin/stow
+$STOW_EXE --adopt bash
+
+# if you have installed the following, also stow the configs
+$STOW_EXE --adopt vim
+$STOW_EXE --adopt git
+$STOW_EXE --adopt tmux
 ```
 
 ## Un-stow
@@ -57,6 +60,7 @@ stow --adopt tmux
 ```bash
 cd ~/.dotfiles
 stow -D zsh
+stow -D bash
 stow -D vim
 stow -D git
 stow -D tmux
