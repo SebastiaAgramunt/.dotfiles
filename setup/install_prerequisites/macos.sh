@@ -1,8 +1,5 @@
-#!/bin/bash
-
-set -e
-
-THIS_DIR=$(dirname "$(realpath "$0")")
+#!/usr/bin/env bash
+set -euo pipefail
 
 if ! command -v brew &>/dev/null; then
     /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
