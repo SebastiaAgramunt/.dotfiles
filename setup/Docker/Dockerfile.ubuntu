@@ -1,0 +1,21 @@
+FROM ubuntu:latest
+
+ARG USERNAME=user
+ARG UID=1000
+ARG GID=1000
+
+ENV DEBIAN_FRONTEND=noninteractive
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+        sudo \
+    && rm -rf /var/lib/apt/lists/*
+
+RUN if ! getent group ${GID} >/dev/null; then \
+        groupadd --gid ${GID} ${USERNAME}; \
+    fi && \
+    useradd --uid ${UID} --gid ${GID} --create-home --shell /bin/bash ${USERNAME} && \
+    echo "${USERNAME} ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
+
+USER ${USERNAME}
+WORKDIR /home/${USERNAME}
+CMD ["/bin/bash"]
