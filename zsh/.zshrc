@@ -16,3 +16,4 @@ done
 
 # set vi to use in command line
 set -o vi
+export PATH="$HOME/.local/bin:$PATH"
