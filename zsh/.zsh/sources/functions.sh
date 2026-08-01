@@ -142,3 +142,19 @@ EOF
       ;;
   esac
 }
+
+show_ips() {
+    echo "Public IP (v4):  $(curl -s -4 https://ifconfig.me || curl -s -4 https://api.ipify.org)"
+    echo "Public IP (v6):  $(curl -s -6 https://ifconfig.me || curl -s -6 https://api.ipify.org)"
+
+    if [[ "$(uname)" == "Darwin" ]]; then
+        local_ip=$(ipconfig getifaddr en0 2>/dev/null || ipconfig getifaddr en1 2>/dev/null)
+    else
+        local_ip=$(hostname -I 2>/dev/null | awk '{print $1}')
+        if [[ -z "$local_ip" ]]; then
+            local_ip=$(ip route get 1 2>/dev/null | awk '{print $7; exit}')
+        fi
+    fi
+
+    echo "Private IP:      ${local_ip:-not found}"
+}

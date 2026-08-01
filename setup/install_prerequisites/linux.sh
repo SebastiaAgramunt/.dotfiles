@@ -1,20 +1,22 @@
 #!/usr/bin/env bash
 set -euo pipefail
-set -x  # Print commands as they run
 
-# Ensure the script is run as root
+# Support both root and non-root users
+SUDO=""
 if [[ "$EUID" -ne 0 ]]; then
-  echo "❌ Please run this script with sudo:"
-  echo "   sudo $0"
-  exit 1
+    if ! command -v sudo &>/dev/null; then
+        echo "Error: not running as root and sudo is not available."
+        exit 1
+    fi
+    SUDO="sudo"
 fi
 
 echo "=============================="
 echo "Updating system"
 echo "=============================="
 
-apt-get update
-apt-get upgrade -y
+${SUDO} apt-get update
+${SUDO} apt-get upgrade -y
 
 echo "=============================="
 echo "Installing packages"
@@ -46,13 +48,13 @@ packages=(
     stow
     mosh
     git-delta
-    bottom
+    tmux
 
     # Shell
     zsh
 )
 
-apt-get install -y "${packages[@]}"
+${SUDO} apt-get install -y "${packages[@]}"
 
 echo "=============================="
 echo "Installation complete"

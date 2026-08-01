@@ -54,3 +54,7 @@ alias backup="$HOME/.dotfiles/zsh/.zsh/scripts/backup.sh"
 
 # command line aliases
 alias eza='eza -lhgm -s modified --icons'
+
+# Docker specific
+alias docker_rm_containers='docker ps --filter status=exited -q | xargs docker rm'
+alias docker_rm_images='docker rmi -f $(docker images -aq)'

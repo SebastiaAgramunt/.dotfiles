@@ -7,7 +7,7 @@ source "$(dirname "${THIS_DIR}")/utils.sh"
 BIN_DIR="${INSTALL_DIR}/bin"
 
 if [[ -f "${BIN_DIR}/fd" ]]; then
-    echo "ripgrep is already installed in ${BIN_DIR}/fd, skipping..."
+    echo "fd is already installed in ${BIN_DIR}/fd, skipping..."
     exit 0
 fi
 

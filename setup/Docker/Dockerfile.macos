@@ -1,0 +1,8 @@
+# homebrew/brew is an Ubuntu image with Homebrew pre-installed.
+# It is the closest Docker equivalent for testing brew-based installs.
+# Note: uname -s returns "Linux" inside this container, so bootstrap.sh
+# will detect Linux. Run install_prerequisites/macos.sh directly instead.
+FROM homebrew/brew:latest
+
+WORKDIR /home/linuxbrew
+CMD ["/bin/bash"]
