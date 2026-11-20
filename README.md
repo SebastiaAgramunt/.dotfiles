@@ -11,7 +11,7 @@ outside it, following the XDG layout:
 | --- | --- |
 | CLI binaries (Linux) | `~/.local/bin` |
 | CLI binaries (macOS) | Homebrew |
-| oh-my-zsh, powerlevel10k, pyenv, awesome-vim, Oh my tmux! | `~/.local/share/<name>` |
+| oh-my-zsh, powerlevel10k, awesome-vim, Oh my tmux! | `~/.local/share/<name>` |
 
 ```text
 .dotfiles/
@@ -116,7 +116,6 @@ Installed with Homebrew on macOS (`setup/Brewfile`) and from GitHub releases int
 ### Third-party frameworks (cloned to `~/.local/share`)
 
 - [oh-my-zsh](https://github.com/ohmyzsh/ohmyzsh) + [powerlevel10k](https://github.com/romkatv/powerlevel10k)
-- [pyenv](https://github.com/pyenv/pyenv) — Python versions live in `~/.local/share/pyenv/versions`
 - [awesome-vim](https://github.com/amix/vimrc) — add your vim settings at the bottom of `vim/.vimrc`
 - [Oh my tmux!](https://github.com/gpakosz/.tmux) — `~/.tmux.conf` is symlinked to it; customize `tmux/.tmux.conf.local`
 

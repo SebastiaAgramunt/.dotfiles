@@ -4,7 +4,7 @@ set -euo pipefail
 THIS_DIR=$(dirname "$(realpath "${BASH_SOURCE[0]}")")
 ROOT_DIR=$(dirname "${THIS_DIR}")
 
-# Binaries go to ~/.local/bin, cloned frameworks (oh-my-zsh, pyenv...) to ~/.local/share.
+# Binaries go to ~/.local/bin, cloned frameworks (oh-my-zsh, awesome-vim...) to ~/.local/share.
 # The repo itself only holds configuration.
 BIN_DIR="${XDG_BIN_HOME:-$HOME/.local/bin}"
 DATA_DIR="${XDG_DATA_HOME:-$HOME/.local/share}"

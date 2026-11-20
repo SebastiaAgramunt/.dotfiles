@@ -19,7 +19,7 @@ if [[ "${OS}" == "apple-darwin" ]]; then
     "${THIS_DIR}/install_prerequisites/macos.sh"
 fi
 
-# oh-my-zsh, powerlevel10k, pyenv, awesome-vim and Oh my tmux! into ~/.local/share
+# oh-my-zsh, powerlevel10k, awesome-vim and Oh my tmux! into ~/.local/share
 "${THIS_DIR}/clones.sh"
 
 # create ~/.config/sh where you should place all private stuff.

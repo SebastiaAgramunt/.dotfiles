@@ -1,7 +1,6 @@
 source "$HOME/.dotfiles/zsh/.zsh/sources/aliases.sh"
 source "$HOME/.dotfiles/zsh/.zsh/sources/exports.sh"
 source "$HOME/.dotfiles/zsh/.zsh/sources/functions.sh"
-source "$HOME/.dotfiles/zsh/.zsh/sources/pyenv_conf.sh"
 source "$HOME/.dotfiles/zsh/.zsh/sources/ohmyzsh.sh"
 
 # this is to prevent a warning if no files are found

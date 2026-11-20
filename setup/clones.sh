@@ -25,10 +25,6 @@ mkdir -p "${DATA_DIR}"
 clone_or_pull https://github.com/ohmyzsh/ohmyzsh.git "${DATA_DIR}/ohmyzsh"
 clone_or_pull https://github.com/romkatv/powerlevel10k.git "${DATA_DIR}/ohmyzsh/custom/themes/powerlevel10k"
 
-# pyenv (loaded from zsh/.zsh/sources/pyenv_conf.sh). Python versions are installed
-# under ${DATA_DIR}/pyenv/versions, so don't delete this directory lightly.
-clone_or_pull https://github.com/pyenv/pyenv.git "${DATA_DIR}/pyenv"
-
 # awesome-vim (sourced from vim/.vimrc)
 clone_or_pull https://github.com/amix/vimrc.git "${DATA_DIR}/awesome-vim"
 
