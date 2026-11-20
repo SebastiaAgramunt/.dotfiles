@@ -6,37 +6,21 @@ THIS_DIR=$(dirname "$(realpath "${BASH_SOURCE[0]}")")
 ROOT_DIR=$(dirname "${THIS_DIR}")
 source "${THIS_DIR}/utils.sh"
 
-# install system packages (uses sudo internally if not root)
+# install system packages (uses sudo internally if not root).
+# On macOS this also installs the CLI tools from the Brewfile.
 if [[ "${OS}" == *"linux"* ]]; then
     "${THIS_DIR}/install_prerequisites/linux.sh"
+
+    # CLI tools from GitHub releases into ~/.local/bin
+    "${THIS_DIR}/tools.sh"
 fi
 
 if [[ "${OS}" == "apple-darwin" ]]; then
     "${THIS_DIR}/install_prerequisites/macos.sh"
 fi
 
-# install all the tools in build/bin
-for script in ${THIS_DIR}/install_scripts/*.sh; do
- if [ -x "$script" ]; then
-   echo "Running $script ..."
-   "$script"
- fi
-done
-
-# clone repositories for tmux config and copy default config to tmux dir
-${THIS_DIR}/third_party_configs/tmux_config.sh
-
-# clone oh-my-zsh repository and power10k repository we will apply config in zsh
-${THIS_DIR}/third_party_configs/oh-my-zsh.sh
-
-# clone powerlevel10k in oh-my-zsh custom directory
-# to configure after this run:
-# p10k config
-# alternatively stow p10k to apply my custom changes
-${THIS_DIR}/third_party_configs/powerlevel10k.sh
-
-# run vim configuration script to set up the .vimrc file and the vimrcs directory
-${THIS_DIR}/third_party_configs/awesome-vim.sh
+# oh-my-zsh, powerlevel10k, pyenv, awesome-vim and Oh my tmux! into ~/.local/share
+"${THIS_DIR}/clones.sh"
 
 # create ~/.config/sh where you should place all private stuff.
 mkdir -p ~/.config/sh

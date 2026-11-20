@@ -4,30 +4,32 @@ Personal shell configs and tooling setup for macOS and Linux.
 
 ## Structure
 
+The repo only holds configuration. Tools and third-party frameworks are installed
+outside it, following the XDG layout:
+
+| What | Where |
+| --- | --- |
+| CLI binaries (Linux) | `~/.local/bin` |
+| CLI binaries (macOS) | Homebrew |
+| oh-my-zsh, powerlevel10k, pyenv, awesome-vim, Oh my tmux! | `~/.local/share/<name>` |
+
 ```text
 .dotfiles/
 ├── bash/          # bash config (stowable)
 ├── git/           # git config (stowable)
 ├── p10k/          # powerlevel10k config (stowable)
-├── tmux/          # tmux config (stowable)
-├── vim/           # vim config (stowable)
+├── tmux/          # .tmux.conf.local, your Oh my tmux! overrides (stowable)
+├── vim/           # .vimrc: loads awesome-vim + your customizations (stowable)
 ├── zsh/           # zsh config (stowable)
-├── build/         # install destination — binaries land in build/bin/
 └── setup/
     ├── bootstrap.sh                 # main entry point
-    ├── utils.sh                     # shared helpers (OS/arch detection)
-    ├── install_prerequisites/
-    │   ├── linux.sh                 # apt packages (uses sudo)
-    │   └── macos.sh                 # homebrew packages
-    ├── install_scripts/             # per-tool installers → build/bin/
-    │   ├── bat.sh, bottom.sh, csvlens.sh, duf.sh, eza.sh
-    │   ├── fd.sh, hexyl.sh, hyperfine.sh, lsd.sh
-    │   ├── pyenv.sh, ripgrep.sh, stow.sh, uv.sh
-    └── third_party_configs/
-        ├── oh-my-zsh.sh
-        ├── powerlevel10k.sh
-        ├── tmux_config.sh
-        └── awesome-vim.sh
+    ├── utils.sh                     # shared helpers (OS/arch detection, install dirs)
+    ├── Brewfile                     # macOS packages and CLI tools
+    ├── tools.sh                     # Linux: CLI tools from GitHub releases → ~/.local/bin
+    ├── clones.sh                    # third-party frameworks → ~/.local/share
+    └── install_prerequisites/
+        ├── linux.sh                 # apt packages (uses sudo)
+        └── macos.sh                 # homebrew + brew bundle
 ```
 
 ## Install
@@ -40,46 +42,28 @@ git clone git@github.com:SebastiaAgramunt/.dotfiles.git ~/.dotfiles
 
 ### 2. Bootstrap
 
-Installs system packages and downloads tool binaries into `build/bin/`.
-
-**macOS:**
-
-```bash
-~/.dotfiles/setup/bootstrap.sh
-```
-
-**Linux** (requires sudo for apt packages):
+Installs system packages and CLI tools, and clones the third-party frameworks.
+Works on macOS and Linux (Linux needs sudo for apt packages):
 
 ```bash
 ~/.dotfiles/setup/bootstrap.sh
 ```
 
-> `build/` is not tracked in git. Safe to delete and re-run bootstrap at any time.
+Re-running it is safe: tools already in `~/.local/bin` are skipped and clones are updated with `git pull`.
+
+To reinstall (upgrade) specific tools on Linux:
+
+```bash
+~/.dotfiles/setup/tools.sh rg fd
+```
 
 ### 3. Stow configs
 
-Stow creates symlinks from `~` into this repo. Run from the repo root.
-
-**macOS** (system `stow` installed by homebrew):
+Stow creates symlinks from `~` into this repo. Run from the repo root:
 
 ```bash
 cd ~/.dotfiles
-stow --adopt zsh
-stow --adopt vim
-stow --adopt git
-stow --adopt tmux
-stow --adopt p10k
-```
-
-**Linux** (stow binary installed into `build/bin/`):
-
-```bash
-cd ~/.dotfiles
-STOW=~/.dotfiles/build/bin/stow
-$STOW --adopt zsh
-$STOW --adopt vim
-$STOW --adopt git
-$STOW --adopt tmux
+stow --adopt zsh vim git tmux p10k
 ```
 
 ### 4. Apply shell config
@@ -111,7 +95,9 @@ p10k configure
 | `gcc`, `make` | build tools |
 | `vim` | editor |
 
-### Tool binaries (downloaded to `build/bin/`)
+### CLI tools
+
+Installed with Homebrew on macOS (`setup/Brewfile`) and from GitHub releases into `~/.local/bin` on Linux (`setup/tools.sh`). To add a tool, add a line to both.
 
 | Tool | Binary | Description |
 | --- | --- | --- |
@@ -119,21 +105,20 @@ p10k configure
 | [bottom](https://github.com/ClementTsang/bottom) | `btm` | system monitor |
 | [csvlens](https://github.com/YS-L/csvlens) | `csvlens` | interactive CSV viewer |
 | [duf](https://github.com/muesli/duf) | `duf` | disk usage utility |
-| [eza](https://github.com/eza-community/eza) | `eza` | modern `ls` (Linux only; macOS uses brew) |
+| [eza](https://github.com/eza-community/eza) | `eza` | modern `ls` |
 | [fd](https://github.com/sharkdp/fd) | `fd` | fast `find` alternative |
 | [hexyl](https://github.com/sharkdp/hexyl) | `hexyl` | hex viewer |
 | [hyperfine](https://github.com/sharkdp/hyperfine) | `hyperfine` | benchmarking tool |
 | [lsd](https://github.com/lsd-rs/lsd) | `lsd` | `ls` with icons |
-| [pyenv](https://github.com/pyenv/pyenv) | `pyenv` | Python version manager |
 | [ripgrep](https://github.com/BurntSushi/ripgrep) | `rg` | fast grep |
 | [uv](https://github.com/astral-sh/uv) | `uv` | fast Python package manager |
 
-### Third-party configs (cloned to `build/`)
+### Third-party frameworks (cloned to `~/.local/share`)
 
-- [oh-my-zsh](https://github.com/ohmyzsh/ohmyzsh)
-- [powerlevel10k](https://github.com/romkatv/powerlevel10k)
-- tmux plugin manager
-- [awesome-vim](https://github.com/amix/vimrc)
+- [oh-my-zsh](https://github.com/ohmyzsh/ohmyzsh) + [powerlevel10k](https://github.com/romkatv/powerlevel10k)
+- [pyenv](https://github.com/pyenv/pyenv) — Python versions live in `~/.local/share/pyenv/versions`
+- [awesome-vim](https://github.com/amix/vimrc) — add your vim settings at the bottom of `vim/.vimrc`
+- [Oh my tmux!](https://github.com/gpakosz/.tmux) — `~/.tmux.conf` is symlinked to it; customize `tmux/.tmux.conf.local`
 
 ---
 

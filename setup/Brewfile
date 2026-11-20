@@ -1,0 +1,25 @@
+# macOS packages. Install with: brew bundle --file ~/.dotfiles/setup/Brewfile
+# On Linux the system packages come from install_prerequisites/linux.sh and the
+# CLI tools from tools.sh; keep the tool list in sync with TOOLS there.
+
+# the very basics
+brew "git"
+brew "zsh"
+brew "tmux"
+brew "mosh"
+brew "stow"
+brew "htop"
+brew "git-delta"
+
+# CLI tools
+brew "bat"
+brew "bottom"
+brew "csvlens"
+brew "duf"
+brew "eza"
+brew "fd"
+brew "hexyl"
+brew "hyperfine"
+brew "lsd"
+brew "ripgrep"
+brew "uv"

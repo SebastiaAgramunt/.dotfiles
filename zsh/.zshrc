@@ -16,4 +16,7 @@ done
 
 # set vi to use in command line
 set -o vi
-export PATH="$HOME/.local/bin:$PATH"
+
+if command -v rbenv >/dev/null 2>&1; then
+  eval "$(rbenv init - zsh)"
+fi

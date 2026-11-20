@@ -1,9 +1,5 @@
-THIS_DIR="$(cd "$(dirname "${BASH_SOURCE[0]:-$0}")" && pwd)"
-ROOT_DIR=$(dirname $(dirname $(dirname "${THIS_DIR}")))
-
-OHMYZSH_PATH=${ROOT_DIR}/build/ohmyzsh
-
-export ZSH="$OHMYZSH_PATH"
+# oh-my-zsh and powerlevel10k, cloned by setup/clones.sh
+export ZSH="${XDG_DATA_HOME:-$HOME/.local/share}/ohmyzsh"
 export ZSH_THEME="powerlevel10k/powerlevel10k"
 
 # this activates the oh-my-zsh plugin

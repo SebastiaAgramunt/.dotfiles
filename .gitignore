@@ -1,5 +1,3 @@
 .install
+# legacy install dir from before tools moved to ~/.local; safe to delete
 build
-.tmux.conf
-.tmux.conf.local
-vim/.vimrc

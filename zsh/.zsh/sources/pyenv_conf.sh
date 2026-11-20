@@ -1,8 +1,5 @@
-THIS_DIR="$(cd "$(dirname "${BASH_SOURCE[0]:-$0}")" && pwd)"
-ROOT_DIR=$(dirname $(dirname $(dirname "${THIS_DIR}")))
-
-# Set up pyenv from dotfiles
-export PYENV_ROOT=${ROOT_DIR}/build/pyenv
+# Set up pyenv, cloned by setup/clones.sh
+export PYENV_ROOT="${XDG_DATA_HOME:-$HOME/.local/share}/pyenv"
 export PATH=$PYENV_ROOT/bin:$PATH
 
 # Initialize pyenv if available
